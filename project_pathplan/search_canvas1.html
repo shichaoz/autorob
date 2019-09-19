@@ -55,8 +55,6 @@ My 2D planner
 <canvas id="myCanvas" width=800 height=800 style="z-index: 10 ;border:1px solid #000000;">
 </canvas> 
 
-
-
 <script>
 
 //////////////////////////////////////////////////
@@ -86,10 +84,10 @@ function initSearch() {
     // specify default the world for the planner 
     //  (stored as "range" global variable with name "planning_scene")
     //planning_scene = "empty";
-    //planning_scene = "misc";
+    planning_scene = "misc";
     //planning_scene = "narrow1";
     //planning_scene = "narrow2";
-    planning_scene = "three_sections";
+    //planning_scene = "three_sections";
 
     // specify default eps (epsilon) spatial resolution variable
     //   for RRT, specifies threshold radius for step size and reaching goal
@@ -226,16 +224,10 @@ function animate() {
         // call iteration for the selected search algorithm
         switch (search_alg) {
             case "depth-first": 
-                search_result = DFS_iterateGraphSearch();
-                break;
             case "breadth-first": 
-                search_result = BFS_iterateGraphSearch();
-                break;
             case "greedy-best-first": 
-                search_result = greedy_iterateGraphSearch();
-                break;
             case "A-star": 
-                search_result = Astar_iterateGraphSearch();
+                search_result = iterateGraphSearch();
                 break;
             case "RRT": 
                 search_result = "failed";
@@ -278,60 +270,11 @@ function animate() {
 
     // callback request for the animate function be called again
     //   more details online:  http://learningwebgl.com/blog/?p=3189
-    if(search_result == "starting" || search_result == "iterating"){
-        requestAnimationFrame( animate );
-    }
-    
+    requestAnimationFrame( animate );
 }
 
-function DFS_iterateGraphSearch()
-{
-    if (search_iter_count>search_max_iterations)
-    {
-        search_iterate=false;
-        return "failed";
-    }
-        if (visit_queue.length<1)
-    {
-        search_iterate=false;
-        return "failed";
-    }
+function iterateGraphSearch() {
 
-    current_node=visit_queue.pop();
-    search_visited++;
-    var cur_iind= current_node.i;
-    var cur_jind= current_node.j;
-    current_node.visited = true;
-    // do sth to neighbor
-    neighbor=[[1,0],[0,-1],[-1,0],[0,1]];
-    for (k=0;k<4;k++)
-    {
-        var step_i= neighbor[k][0];
-        var step_j= neighbor[k][1];
-        var collision= testCollision([G[cur_iind+step_i][cur_jind+step_j].x,G[cur_iind+step_i][cur_jind+step_j].y]);
-
-        if (collision==false && G[cur_iind+step_i][cur_jind+step_j].visited == false && G[cur_iind+step_i][cur_jind+step_j].queued==false)
-        {
-                draw_2D_configuration([G[cur_iind+step_i][cur_jind+step_j].x,G[cur_iind+step_i][cur_jind+step_j].y]);
-                visit_queue.push(G[cur_iind+step_i][cur_jind+step_j]);
-                                 G[cur_iind+step_i][cur_jind+step_j].queued=true;
-                if(G[cur_iind+step_i][cur_jind+step_j].distance>G[cur_iind][cur_jind].distance+ eps)
-                {
-                    G[cur_iind+step_i][cur_jind+step_j].parent= G[cur_iind][cur_jind];
-                    G[cur_iind+step_i][cur_jind+step_j].distance=G[cur_iind][cur_jind].distance+ Math.sqrt(Math.pow(G[cur_iind+step_i][cur_jind+step_j].x-G[cur_iind+step_i][cur_jind+step_j].parent.x,2)+Math.pow(G[cur_iind+step_i][cur_jind+step_j].y-G[cur_iind+step_i][cur_jind+step_j].parent.y,2));
-                } 
-                if (Math.round((G[cur_iind+step_i][cur_jind+step_j].x-q_goal[0])/eps)==0 && Math.round((G[cur_iind+step_i][cur_jind+step_j].y-q_goal[1])/eps)==0)
-                 {
-                    search_iterate=false;
-                    drawHighlightedPathGraph(G[cur_iind+step_i][cur_jind+step_j]);
-                    return "succeeded"
-                }
-        }
-    }
-
-
-
-    return "iterating"
 
     // STENCIL: implement a single iteration of a graph search algorithm
     //   for A-star (or DFS, BFS, Greedy Best-First)
@@ -349,253 +292,8 @@ function DFS_iterateGraphSearch()
     //   draw_2D_configuration - draws a square at a given location 
 }
 
-function BFS_iterateGraphSearch()
-{
-    if (search_iter_count>search_max_iterations)
-    {
-        search_iterate=false;
-        return "failed";
-    }
-
-    current_node=visit_queue.shift();
-    search_visited++;
-    var cur_iind= current_node.i;
-    var cur_jind= current_node.j;
-    current_node.visited = true;
-    // do sth to neighbor
-    neighbor=[[1,0],[0,-1],[-1,0],[0,1]];
-    for (k=0;k<4;k++)
-    {
-        var step_i= neighbor[k][0];
-        var step_j= neighbor[k][1];
-        var collision= testCollision([G[cur_iind+step_i][cur_jind+step_j].x,G[cur_iind+step_i][cur_jind+step_j].y]);
-
-        if (collision==false && G[cur_iind+step_i][cur_jind+step_j].visited == false && G[cur_iind+step_i][cur_jind+step_j].queued==false)
-        {
-                draw_2D_configuration([G[cur_iind+step_i][cur_jind+step_j].x,G[cur_iind+step_i][cur_jind+step_j].y]);
-                visit_queue.push(G[cur_iind+step_i][cur_jind+step_j]);
-                                 G[cur_iind+step_i][cur_jind+step_j].queued=true;
-                if(G[cur_iind+step_i][cur_jind+step_j].distance>G[cur_iind][cur_jind].distance+eps)
-                {
-                    G[cur_iind+step_i][cur_jind+step_j].parent= G[cur_iind][cur_jind];
-                    G[cur_iind+step_i][cur_jind+step_j].distance=G[cur_iind][cur_jind].distance+ Math.sqrt(Math.pow(G[cur_iind+step_i][cur_jind+step_j].x-G[cur_iind+step_i][cur_jind+step_j].parent.x,2)+Math.pow(G[cur_iind+step_i][cur_jind+step_j].y-G[cur_iind+step_i][cur_jind+step_j].parent.y,2));
-                } 
-
-
-                if (Math.round((G[cur_iind+step_i][cur_jind+step_j].x-q_goal[0])/eps)==0 && Math.round((G[cur_iind+step_i][cur_jind+step_j].y-q_goal[1])/eps)==0)
-                 {
-                    search_iterate=false;
-                    drawHighlightedPathGraph(G[cur_iind+step_i][cur_jind+step_j]);
-                    return "succeeded"
-                }
-        }
-    }
-
-
-    if (visit_queue.length<1)
-    {
-        search_iterate=false;
-        return "failed";
-    }
-    return "iterating"
-  
-}
-
-
-
-
-
-function greedy_iterateGraphSearch()
-{
-    if (search_iter_count>search_max_iterations)
-    {
-        search_iterate=false;
-        return "failed";
-    }
-        if (visit_queue.length<1)
-    {
-        search_iterate=false;
-        return "failed";
-    }
-
-    current_node=minheap_extract(visit_queue);
-    search_visited++;
-    var cur_iind=current_node.i;
-    var cur_jind=current_node.j;
-    current_node.visited = true;
-    // do sth to neighbor
-    neighbor=[[1,0],[0,-1],[-1,0],[0,1]];
-    for (k=0;k<4;k++)
-    {
-        var step_i=neighbor[k][0];
-        var step_j=neighbor[k][1];
-        var collision=testCollision([G[cur_iind+step_i][cur_jind+step_j].x,G[cur_iind+step_i][cur_jind+step_j].y]);
-
-        if (collision==false && G[cur_iind+step_i][cur_jind+step_j].visited == false && G[cur_iind+step_i][cur_jind+step_j].queued==false)
-        {
-            
-                draw_2D_configuration([G[cur_iind+step_i][cur_jind+step_j].x,G[cur_iind+step_i][cur_jind+step_j].y]);
-                G[cur_iind+step_i][cur_jind+step_j].queued=true;
-                if(G[cur_iind+step_i][cur_jind+step_j].distance>G[cur_iind][cur_jind].distance+eps)
-                {
-                    G[cur_iind+step_i][cur_jind+step_j].parent= G[cur_iind][cur_jind];
-                    G[cur_iind+step_i][cur_jind+step_j].distance=G[cur_iind][cur_jind].distance+ eps;
-
-                    // fscore=distance_nbr+line_distance(nbr,goal)
-                    G[cur_iind+step_i][cur_jind+step_j].priority=  Math.sqrt(Math.pow(G[cur_iind+step_i][cur_jind+step_j].x-q_goal[0],2)+Math.pow(G[cur_iind+step_i][cur_jind+step_j].y-q_goal[1],2));
-                    
-                } 
-                minheap_insert(visit_queue,G[cur_iind+step_i][cur_jind+step_j]);
-
-
-
-
-                if (Math.round((G[cur_iind+step_i][cur_jind+step_j].x-q_goal[0])/eps)==0 && Math.round((G[cur_iind+step_i][cur_jind+step_j].y-q_goal[1])/eps)==0)
-                 {
-                    search_iterate=false;
-                    drawHighlightedPathGraph(G[cur_iind+step_i][cur_jind+step_j]);
-                    return "succeeded";
-                }
-        }
-    }
-
-
-
-
-    
-    return "iterating";
-}
-
-
-function Astar_iterateGraphSearch()
-{
-    if (search_iter_count>search_max_iterations)
-    {
-        search_iterate=false;
-        return "failed";
-    }
-        if (visit_queue.length<1)
-    {
-        search_iterate=false;
-        return "failed";
-    }
-
-    current_node=minheap_extract(visit_queue);
-    search_visited++;
-    var cur_iind= current_node.i;
-    var cur_jind= current_node.j;
-    current_node.visited = true;
-    // do sth to neighbor
-    neighbor=[[1,0],[0,-1],[-1,0],[0,1]];
-    for (k=0;k<4;k++)
-    {
-        var step_i= neighbor[k][0];
-        var step_j= neighbor[k][1];
-        var collision= testCollision([G[cur_iind+step_i][cur_jind+step_j].x,G[cur_iind+step_i][cur_jind+step_j].y]);
-     
-
-        if (collision==false && G[cur_iind+step_i][cur_jind+step_j].visited == false && G[cur_iind+step_i][cur_jind+step_j].queued==false)
-        {
-                draw_2D_configuration([G[cur_iind+step_i][cur_jind+step_j].x,G[cur_iind+step_i][cur_jind+step_j].y]);
-                G[cur_iind+step_i][cur_jind+step_j].queued=true;
-                if(G[cur_iind+step_i][cur_jind+step_j].distance>G[cur_iind][cur_jind].distance+eps)
-                {
-                    G[cur_iind+step_i][cur_jind+step_j].parent= G[cur_iind][cur_jind];
-                    G[cur_iind+step_i][cur_jind+step_j].distance=G[cur_iind][cur_jind].distance+ eps;
-
-                    // fscore=distance_nbr+line_distance(nbr,goal)
-                    G[cur_iind+step_i][cur_jind+step_j].priority= G[cur_iind+step_i][cur_jind+step_j].distance + Math.sqrt(Math.pow(G[cur_iind+step_i][cur_jind+step_j].x-q_goal[0],2)+Math.pow(G[cur_iind+step_i][cur_jind+step_j].y-q_goal[1],2));
-                } 
-                minheap_insert(visit_queue,G[cur_iind+step_i][cur_jind+step_j]);
-
-
-
-
-                if (Math.round((G[cur_iind+step_i][cur_jind+step_j].x-q_goal[0])/eps)==0 && Math.round((G[cur_iind+step_i][cur_jind+step_j].y-q_goal[1])/eps)==0)
-                 {
-                    search_iterate=false;
-                    drawHighlightedPathGraph(G[cur_iind+step_i][cur_jind+step_j]);
-                    return "succeeded";
-                }
-        }
-    }
-
-
-
-
-    
-    return "iterating";
-}
-
-
-
-
-// supplement function, to find the optimal fscore/priority
-function minheap_insert(heap, new_element) {
-
-  var elntIdx=heap.length;
-  var prntIdx=Math.floor((elntIdx-1)/2);
-  heap.push(new_element);
-  var heaped=(elntIdx<=0)||(heap[prntIdx].priority<=heap[elntIdx].priority);
-  while(!heaped){
-    var tmp=heap[prntIdx];
-    heap[prntIdx]=heap[elntIdx];
-    heap[elntIdx]=tmp;
-    elntIdx=prntIdx;
-    prntIdx=Math.floor((elntIdx-1)/2);
-    heaped=(elntIdx<=0)||(heap[prntIdx].priority<=heap[elntIdx].priority);
-  }
-
-
-    // STENCIL: implement your min binary heap insert operation
-}
-function minheap_extract(heap){ 
-    var takeout=heap[0]; 
-    var stat=0; //stat means current position; after comparison stat will change
-    heap[stat]=heap[heap.length-1]; 
-    heap.pop(heap.length-1);//delete the last element
-    while(stat<heap.length)
-    { 
-        var tmp=heap[stat]; 
-        child_No1=2*stat+1; 
-        child_No2=2*stat+2;
-
-        //first compare wthich is smallest among three 
-        if(child_No1<=heap.length-1){ 
-            if(tmp.priority>heap[child_No1].priority)
-                {min=heap[child_No1];}
-            else{min=tmp;} 
-        } 
-
-        else{break;} 
-        if(child_No2<=heap.length-1){ 
-            if(min.priority>heap[child_No2].priority)
-            {min=heap[child_No2];} 
-        } 
-        if(min==tmp){break;} 
-
-        // now change the position
-        if(min.priority==heap[child_No1].priority){ 
-            heap[stat]=heap[child_No1];
-            heap[child_No1]=tmp; 
-            stat=child_No1; 
-        }
-        else{ 
-            heap[stat]=heap[child_No2]; 
-            heap[child_No2]=tmp; 
-            stat=child_No2; 
-        } 
-    } 
-    return takeout; 
-}
-
-
-
-
 
 function iterateRRT() {
-
-
 
 
     // STENCIL: implement a single iteration of an RRT algorithm.
@@ -638,9 +336,6 @@ function iterateRRTConnect() {
 function iterateRRTStar() {
 
 }
-
-
-
 
 //////////////////////////////////////////////////
 /////     STENCIL SUPPORT FUNCTIONS
@@ -712,10 +407,6 @@ function drawHighlightedPathGraph(current_node) {
 }
 
 
-
-
-
-
 function initSearchGraph() {
 
     // KE: visit queue not created for certain values of eps
@@ -739,14 +430,9 @@ function initSearchGraph() {
 
             // STENCIL: determine whether this graph node should be the start
             //   point for the search
+                visit_queue = [];
         }
     }
-    // initialize the point as start point
-    var i_start= Math.round((q_init[0]+2)/eps);
-    var j_start= Math.round((q_init[1]+2)/eps);
-    G[i_start][j_start].priority = Math.sqrt(Math.pow(G[i_start][j_start].x-q_goal[0],2)+Math.pow(G[i_start][j_start].y-q_goal[1],2));
-    G[i_start][j_start].distance=0;
-    visit_queue.push(G[i_start][j_start]);
 }
 
 function setPlanningScene() {

@@ -1,0 +1,379 @@
+<html>
+<body style='margin-top:45px;margin-left:80px;margin-right:80px; font-size:18px;'>
+
+<h1>EECS 567</h1>
+<h1> Project 1: <a href="http://autorob.org/#assignment1">Path Plan</a> </h1>
+<h3>Shichao Zeng</h3>
+<h3>Instructor: Chad Jenkins</h3>
+
+
+
+
+
+
+
+<br><h2>I. Motivation</h2>
+
+<p>
+    Autonomous robots, which is mostly about sensing, reasoning and acting, are playing an increasingly essential role in various fields. Sensing
+    allows the robot to construct the maps of its surrounding. After getting the map, the robot can use the method of path planning
+    to generate a path from the starting point to the goal without collision. In order to find the shortest path
+    efficiently, several path planning algorithms are created, such as depth-first search, breadth-first search,
+    A* shortest path algorithm and greedy-best-first search. Without generating the desired path, the robot is not able to 
+    take action to move from the starting point to the goal.
+</p>
+
+
+
+
+
+
+
+
+
+<br><h2>II. Method</h2>
+
+<p>
+    The four path planing algorithms, including depth-first search, breadth-first search, A* shortest path algorithm and greedy-best-first search
+    are most commonly used. In this report,we apply the four kinds of algorithms to different maps with various obstacles and compare the result with each other.
+</p>
+
+<h3>a) Depth-first search</h3>
+<p>
+    In the depth-first search algorithm, the element with the highest priority in the visit queue is the one 
+most recently put into the visit queue. Therefore, the search will keep going in one direction, and change
+direction when hitting the obstacle or collison while obeying the next one in the visit queue.
+</p>
+
+<h3>b) Breadth-first search</h3>
+<p>
+    In the breadth-first search algorithm, the element with the highest priority in the visit queue is the one most
+    early put into the visit queue. Therefore, the search will keep increasing its search range equally in all
+    direction.
+</p>
+
+<h3>c) A* shortest path algorithm</h3>
+<p>
+    In the A* algorithm, the element with the highest priority in the visit queue is the one with lowest f-score.
+    F-score of a node equals the sum of the known shortest path from the node to the start and the line distance between
+    the node and the goal. Therefore, the search will spread its search range faster in the direction towards the goal.
+</p>
+
+<h3>d) Greedy-best-first search</h3>
+<p>
+    In the greedy-best-first search, the element with the highest priority in the visit queue is the one with lowest
+    h-score.
+    H-score of a node equals to the line distance between the node and the goal.
+    Therefore, the search will go directly towards the goal unless hitting the obstacles or collison.
+</p>
+
+
+
+
+
+
+
+
+
+
+
+    <br><h2>III. Results</h2>
+<h3>a) Empty map</h3>
+<p>
+    The testing results of the four algorithms on the empty map with start
+    [0,0] and goal [4,4] are shown in fig. 1. From table 1, Breadth-first, A* and greedy-best-first search have the
+    same short path length, while depth-first search has much a longer path. The greedy-best-first takes the
+    shortest time to find the goal, while the breadth-first search takes the longest time in searching. For the empty
+    map, greedy-best-first is the best algorithm, as it is accurate and much faster than the others.
+
+<p>
+    <img width=40% src="screenshot/empty_dfs.png"> <img width=40% src="screenshot/empty_bfs.png">
+    <br><img width=40% src="screenshot/empty_astar.png"> <img width=40% src="screenshot/empty_gbf.png">
+    <br>Figure 1: the path on the empty map with start
+    [0,0] and goal [4,4]. The top left figure is by the depth-first search.
+    The top right figure is by the breadth-first search. The bottom left
+    figure is by the A* search. The bottom right figure is by the
+    greedy-best-first search.
+</p>
+</p>
+
+Table 1: the testing result of visited count and path length for the empty map when start [0,0] and goal[4,4].
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+
+
+<table style="width:60%; font-size:20px;">
+    <tr>
+        <th>Algorithm</th>
+        <th>Path length</th>
+        <th>Visited</th>
+    </tr>
+    <tr>
+        <td>Depth-first</td>
+        <td>156.60</td>
+        <td>1569</td>
+    </tr>
+    <tr>
+        <td>Breadth-first</td>
+        <td>8.00</td>
+        <td>3479</td>
+    </tr>
+    <tr>
+        <td>A*</td>
+        <td>8.00</td>
+        <td>2213</td>
+    </tr>
+    <tr>
+        <td>Greedy-best-first</td>
+        <td>8.00</td>
+        <td>80</td>
+    </tr>
+</table>
+
+<h3>b) Misc map</h3>
+<p>
+    The testing results of the four algorithms on the misc map with start [0,0] and goal [4,4] are shown in fig. 2.
+    From table 2, both breadth-first and A* have the shortest path, while depth-first has the longest.
+    All of the four algorithms take a similar amount of time to find the goal.
+    The greedy-best-first has the shortest time. Between breadth-first and A*, A* is faster.
+    For the misc map, A* is the best, it finds the shortest path and is relatively fast.
+
+
+<p>
+    <img width=40% src="screenshot/misc_dfs.png"> <img width=40% src="screenshot/misc_bfs.png">
+    <br><img width=40% src="screenshot/misc_astar.png"> <img width=40% src="screenshot/misc_gbf.png">
+    <br>Figure 2: the path on the misc map with start [0,0] and goal [4,4]. The top left figure is by the depth-first search.
+    The top right figure is by the breadth-first search. The bottom left figure is by the A* search. The bottom right figure is by the
+    greedy-best-first search.
+</p>
+
+</p>
+Table 2: the testing result of visited count and path length for the misc map when start [0,0] and goal
+[4,4].
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+<table style="width:60%; font-size:20px;">
+    <tr>
+        <th>Algorithm</th>
+        <th>Path length</th>
+        <th>Visited</th>
+    </tr>
+    <tr>
+        <td>Depth-first</td>
+        <td>123.20</td>
+        <td>1581</td>
+    </tr>
+    <tr>
+        <td>Breadth-first</td>
+        <td>9.80</td>
+        <td>3223</td>
+    </tr>
+    <tr>
+        <td>A*</td>
+        <td>9.80</td>
+        <td>2678</td>
+    </tr>
+    <tr>
+        <td>Greedy-best-first</td>
+        <td>17.0</td>
+        <td>2072</td>
+    </tr>
+</table>
+
+<h3>c) Narrow 1 map</h3>
+<p>
+    The testing results of the four algorithms on the narrow 1 map with start
+    [0,0] and goal [4,4] are shown in fig. 3. From table 3, breadth-first, A* and greedy-best-first have the shortest
+    path. The greedy-best-first is the fastest one. Therefore, for the narrow 1 map, greedy-best-first is the best
+    one.
+
+<p>
+    <img width=40% src="screenshot/n1_dfs.png"> <img width=40% src="screenshot/n1_bfs.png">
+    <br><img width=40% src="screenshot/n1_astar.png"> <img width=40% src="screenshot/n1_gbf.png">
+    <br>Figure 3: the path on the narrow 1 map with start [0,0] and goal [4,4]. The top left figure is by the
+    depth-first search. The top right figure is by the breadth-first search. The bottom left
+    figure is by the A* search. The bottom right figure is by the
+    greedy-best-first search.
+</p>
+
+</p>
+
+Table 3: the testing result of visited count and path length for the narrow 1 map when start [0,0] and goal
+[4,4].
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+<table style="width:60%; font-size:20px;">
+    <tr>
+        <th>Algorithm</th>
+        <th>Path length</th>
+        <th>Visited</th>
+    </tr>
+    <tr>
+        <td>Depth-first</td>
+        <td>98.60</td>
+        <td>1095</td>
+    </tr>
+    <tr>
+        <td>Breadth-first</td>
+        <td>8.00</td>
+        <td>1536</td>
+    </tr>
+    <tr>
+        <td>A*</td>
+        <td>8.00</td>
+        <td>919</td>
+    </tr>
+    <tr>
+        <td>Greedy-best-first</td>
+        <td>8.00</td>
+        <td>80</td>
+    </tr>
+</table>
+
+<h3>d) Narrow 2 map</h3>
+<p>
+    The testing results of the four algorithms on the narrow 2 map with start
+    [0,0] and goal [4,4] are shown in fig. 4. From table 4, breadth-first, A* and greedy-best-first find the shortest
+    path. The greedy-best-first search have takes the least time. Therefore, for the narrow 2 map, greedy-best-first
+    search is the best one.
+
+
+<p>
+    <img width=40% src="screenshot/n2_dfs.png"> <img width=40% src="screenshot/n2_bfs.png">
+    <br><img width=40% src="screenshot/n2_astar.png"> <img width=40% src="screenshot/n2_gbf.png">
+    <br>Figure 4: the path on the narrow 2 map with start [0,0] and goal [4,4]. The top left figure is by the
+    depth-first
+    search.
+    The top right figure is by the breadth-first search. The bottom left
+    figure is by the A* search. The bottom right figure is by the
+    greedy-best-first search.
+</p>
+</p>
+Table 4: the testing result of visited count and path length for the narrow 2 map when start [0,0] and goal
+[4,4].
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+<table style="width:60%; font-size:20px;">
+    <tr>
+        <th>Algorithm</th>
+        <th>Path length</th>
+        <th>Visited</th>
+    </tr>
+    <tr>
+        <td>Depth-first</td>
+        <td>91.60</td>
+        <td>1025</td>
+    </tr>
+    <tr>
+        <td>Breadth-first</td>
+        <td>11.40</td>
+        <td>2053</td>
+    </tr>
+    <tr>
+        <td>A*</td>
+        <td>11.40</td>
+        <td>1504</td>
+    </tr>
+    <tr>
+        <td>Greedy-best-first</td>
+        <td>11.40</td>
+        <td>137</td>
+    </tr>
+</table>
+
+<h3>e) Three sections map</h3>
+<p>
+    The testing results of the four algorithms on the three sections map with start
+    [0,0] and goal [4,4] are shown in fig. 5. From table 5, breadth-first, A* and greedy-best-first find the shortest
+    path. The greedy-best-first search have takes the least time. Therefore, for the narrow 2 map, greedy-best-first
+    search is the best one.
+
+<p>
+    <img width=40% src="screenshot/threesec_dfs.png"> <img width=40% src="screenshot/threesec_bfs.png">
+    <br><img width=40% src="screenshot/threesec_astar.png"> <img width=40% src="screenshot/threesec_gbf.png">
+    <br>Figure 5: the path on the three sections map with start [0,0] and goal [4,4]. The top left figure is by the
+    depth-first
+    search.
+    The top right figure is by the breadth-first search. The bottom left
+    figure is by the A* search. The bottom right figure is by the
+    greedy-best-first search.
+</p>
+
+</p>
+
+Table 5: the testing result of visited count and path length for the three sections map when start [0,0] and goal
+[4,4].
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+</style>
+<table style="width:60%; font-size:20px;">
+    <tr>
+        <th>Algorithm</th>
+        <th>Path length</th>
+        <th>Visited</th>
+    </tr>
+    <tr>
+        <td>Depth-first</td>
+        <td>131.20</td>
+        <td>1494</td>
+    </tr>
+    <tr>
+        <td>Breadth-first</td>
+        <td>14.20</td>
+        <td>3144</td>
+    </tr>
+    <tr>
+        <td>A*</td>
+        <td>14.20</td>
+        <td>2395</td>
+    </tr>
+    <tr>
+        <td>Greedy-best-first</td>
+        <td>14.20</td>
+        <td>905</td>
+    </tr>
+</table>
+
+</br>
+
+
+
+
+
+
+    <br><h2>IV. Conclusion</h2>
+<p>
+    The advantages and the disadvantages of the four algorithms are obvious from the results.
+    Firstly, the Depth-first search can hardly find the shortest path and almost search all the points on the map, which greatly depends on how the priority, often direction, is chosen.
+    The A* algorithm improves the effiency because it gives a relatively reasonable priority to guide the search direction. Both A* and the breadth-first search can find the shortest path. Moreover, Greedy-best-first search is the one with the highest
+    efficiency among A*, breadth-first, and greedy-best-first. However, it very depends on the what the map looks like. If there are obstacles cutting the line between tha start and the goal, greedy-best-first very likely can't find the shortest path. So basically the most practical method for path planning is A* algorithm.
+
+    <br><br><br><br>
+</p>
+
+
+<!-- script element contains JavaScript code -->
+<script>
+
+
+
+</script>
+
+</body>
+</html>
+
+
