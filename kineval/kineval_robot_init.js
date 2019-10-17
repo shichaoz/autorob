@@ -51,14 +51,21 @@ kineval.initRobotJoints = function initRobotJoints() {
         robot.joints[x].control = 0;
         robot.joints[x].servo = {};
     // STENCIL: set appropriate servo gains for arm setpoint control
-        robot.joints[x].servo.p_gain = 0; 
+        robot.joints[x].servo.p_gain = 0.5; 
         robot.joints[x].servo.p_desired = 0;
-        robot.joints[x].servo.d_gain = 0; 
+        robot.joints[x].servo.d_gain = 0.5; 
 
     // STENCIL: complete kinematic hierarchy of robot for convenience.
     //   robot description only specifies parent and child links for joints.
     //   additionally specify parent and child joints for each link
-
+        var x_parent = robot.joints[x].parent; 
+        var x_child=robot.joints[x].child;
+        if (typeof robot.links[x_parent].children === 'undefined'){
+            robot.links[x_parent].children=[];
+        }
+        robot.links[x_child].parent = x;
+        robot.links[x_parent].children.push(x);        
+   
     }
 
 }
