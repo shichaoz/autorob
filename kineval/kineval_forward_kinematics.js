@@ -41,11 +41,12 @@ function traverseFKBase(){
             matrix_multiply(generate_rotation_matrix_Y(robot.origin.rpy[1]),generate_rotation_matrix_X(robot.origin.rpy[0]))));*/
     var mR_middle=matrix_multiply(generate_rotation_matrix_Y(robot.origin.rpy[1]),generate_rotation_matrix_X(robot.origin.rpy[0]));        
     var mR = matrix_multiply(generate_rotation_matrix_Z(robot.origin.rpy[2]),mR_middle);
-    var mT = generate_translation_matrix(robot.origin.xyz[0], robot.origin.xyz[1], robot.origin.xyz[2]);
+    var mT = generate_translation_matrix(robot.origin.xyz[0], robot.origin.xyz[1], robot.origin.xyz[2]); 
+    var heading = [[0],[0],[1],[1]];////////
     robot.links[robot.base].xform = matrix_multiply(mT,mR);
-
-
-
+    robot_heading = matrix_multiply(robot.links[robot.base].xform,heading);
+    var lateral = [[1],[0],[0],[1]];////////
+    robot_lateral = matrix_multiply(robot.links[robot.base].xform,lateral);
     if (robot.links_geom_imported){
         robot.links[robot.base].xform = matrix_multiply(robot.links[robot.base].xform,
             matrix_multiply(generate_rotation_matrix_Y(-Math.PI/2),generate_rotation_matrix_X(-Math.PI/2)));
@@ -59,10 +60,32 @@ function traverseFKJoint(curjoint){
     var mR_middle=matrix_multiply(generate_rotation_matrix_Y(robot.joints[curjoint].origin.rpy[1]),generate_rotation_matrix_X(robot.joints[curjoint].origin.rpy[0]));        
     var mR = matrix_multiply(generate_rotation_matrix_Z(robot.joints[curjoint].origin.rpy[2]),mR_middle);
     var mT = generate_translation_matrix(robot.joints[curjoint].origin.xyz[0],robot.joints[curjoint].origin.xyz[1],robot.joints[curjoint].origin.xyz[2]);
-    robot.joints[curjoint].xform = matrix_multiply(robot.links[robot.joints[curjoint].parent].xform,matrix_multiply(mT,mR));
+    var mq;
+    if (robot.links_geom_imported){
+        if (robot.joints[curjoint].type === "prismatic"){
+            var temp = [ robot.joints[curjoint].angle, robot.joints[curjoint].angle, robot.joints[curjoint].angle];
+            temp[0] = temp[0] * robot.joints[curjoint].axis[0];
+            temp[1] = temp[1] * robot.joints[curjoint].axis[1];
+            temp[2] = temp[2] * robot.joints[curjoint].axis[2];
+            mq = generate_translation_matrix(temp[0],temp[1],temp[2]);//////////////////
+        }
+        else if ((robot.joints[curjoint].type === "continuous")|(robot.joints[curjoint].type === "revolute")){
+            mq = quaternion_to_rotation_matrix(quaternion_normalize(quaternion_from_axisangle(robot.joints[curjoint].angle,robot.joints[curjoint].axis)));
+        }
+        else{
+            mq = generate_identy(4);
+        }
+    }
+    else{
+        mq = quaternion_to_rotation_matrix(quaternion_normalize(quaternion_from_axisangle(robot.joints[curjoint].angle,robot.joints[curjoint].axis))); 
+    }
 
+    var m_state = matrix_multiply(robot.links[robot.joints[curjoint].parent].xform,matrix_multiply(mT,mR));
+    robot.joints[curjoint].xform = matrix_multiply(m_state, mq);
     traverseFKLink(robot.joints[curjoint].child);
 }
+
+
 
 function traverseFKLink(curlink){
     robot.links[curlink].xform = robot.joints[robot.links[curlink].parent].xform;

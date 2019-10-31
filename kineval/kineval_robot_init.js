@@ -67,6 +67,8 @@ kineval.initRobotJoints = function initRobotJoints() {
         robot.links[x_parent].children.push(x);        
    
     }
+    timestart = new Date();
+
 
 }
 

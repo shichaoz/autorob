@@ -1,6 +1,6 @@
 //   CREATE ROBOT STRUCTURE
 
-// KE 
+
 
 links_geom_imported = false;
 
