@@ -24,7 +24,7 @@ function quaternion_normalize (q) {
 }
 
 function   quaternion_to_rotation_matrix(q){
-    var temp = generate_identy(4);
+    var temp = generate_identity(4);
     temp[0][0] = q[0]*q[0] + q[1]*q[1] - q[2]*q[2] - q[3]*q[3];
     temp[0][1] = 2*( q[1]*q[2] - q[0]*q[3] );
     temp[0][2] = 2*( q[0]*q[2] + q[1]*q[3] );

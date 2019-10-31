@@ -136,7 +136,7 @@ function vector_cross(v1,v2){
     return v;
 }
 
-function generate_identy() {//generate a 4-by-4 identity matrix
+function generate_identity() {//generate a 4-by-4 identity matrix
     var mat = [];
     var i,j;
     for (i=0;i<4;i++) { // for each row of m1
@@ -154,7 +154,7 @@ function generate_identy() {//generate a 4-by-4 identity matrix
 
 
 function generate_translation_matrix(a1,a2,a3) {//generate a 4-by-4 identity matrix
-    var mat = generate_identy();
+    var mat = generate_identity();
     var translation=[a1,a2,a3];
     var i;
     for (i=0;i<3;i++) { // for each column of m1
@@ -163,7 +163,7 @@ function generate_translation_matrix(a1,a2,a3) {//generate a 4-by-4 identity mat
     return mat;
 }
 function generate_rotation_matrix_X(theta) {//generate a 4-by-4 identity matrix
-    var mat = generate_identy();
+    var mat = generate_identity();
     mat[1][1]=Math.cos(theta);
     mat[2][2]=Math.cos(theta);
     mat[1][2]=-Math.sin(theta);
@@ -171,7 +171,7 @@ function generate_rotation_matrix_X(theta) {//generate a 4-by-4 identity matrix
     return mat;
 }
 function generate_rotation_matrix_Y(theta) {//generate a 4-by-4 identity matrix
-    var mat = generate_identy();
+    var mat = generate_identity();
     mat[0][0]=Math.cos(theta);
     mat[2][2]=Math.cos(theta);
     mat[0][2]=Math.sin(theta);
@@ -179,7 +179,7 @@ function generate_rotation_matrix_Y(theta) {//generate a 4-by-4 identity matrix
     return mat;
 }
 function generate_rotation_matrix_Z(theta) {//generate a 4-by-4 identity matrix
-    var mat = generate_identy();
+    var mat = generate_identity();
     mat[0][0]=Math.cos(theta);
     mat[1][1]=Math.cos(theta);
     mat[0][1]=-Math.sin(theta);

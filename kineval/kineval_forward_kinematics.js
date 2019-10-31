@@ -73,7 +73,7 @@ function traverseFKJoint(curjoint){
             mq = quaternion_to_rotation_matrix(quaternion_normalize(quaternion_from_axisangle(robot.joints[curjoint].angle,robot.joints[curjoint].axis)));
         }
         else{
-            mq = generate_identy(4);
+            mq = generate_identity(4);
         }
     }
     else{
