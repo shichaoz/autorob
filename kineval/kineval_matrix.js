@@ -186,3 +186,46 @@ function generate_rotation_matrix_Z(theta) {//generate a 4-by-4 identity matrix
     mat[1][0]=Math.sin(theta);
     return mat;
 }
+
+
+
+
+// edit on 11.9 assignment 5
+
+function matrix_vector_multiply(m1,v1){
+    var v = [];
+    var i;
+    var j;
+    v1 = [v1[0],v1[1],v1[2],0];
+    for (i=0;i<m1.length;++i){
+        v[i] = 0;
+        for (j=0;j<m1[0].length;++j){
+            v[i] += m1[i][j]*v1[j];
+        }
+    }
+    v = [v[0],v[1],v[2]];
+    return v;
+}
+
+function xform_to_theta(xform){
+    
+    var theta1=[Math.atan2( xform[2][1], xform[2][2])];
+    var theta3=[Math.atan2( xform[1][0], xform[0][0])];
+    var temp = Math.pow(xform[2][1], 2)+ Math.pow(xform[2][2], 2);
+    temp = Math.pow(temp,0.5);
+    var theta2=[Math.atan2(-xform[2][0],temp)];
+    
+    var theta = [theta1,theta2,theta3];
+    return theta;
+}
+
+function vector_minus(v1,v2) {
+    var v = [];
+    for (i = 0; i<v1.length; ++i) {
+        v[i] = v1[i]-v2[i];
+    }
+    return v;
+}
+
+
+
