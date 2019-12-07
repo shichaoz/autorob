@@ -130,7 +130,7 @@ kineval.robotRRTPlannerInit = function robot_rrt_planner_init() {
     // init tree
     T_a = tree_init(q_start_config);
     T_b = tree_init(q_goal_config);
-    ver_step = 0.4; // init ver_step , is the step distance
+    ver_step = 0.4; // init ver_step , the step distance
 }
 
 
@@ -365,18 +365,18 @@ function nearest_neighbor(q, T){
 
 function path_dfs(T_1,T_2){
     var A_path = [];
-    var Ttemp = T_1.vertices[T_1.newest];//object
+    var Ttemp = T_1.vertices[T_1.newest];
     A_path.push(Ttemp);
     while (T_1.vertices.indexOf(Ttemp) !== 0){
-        Ttemp = Ttemp.edges[0];//for every vertex, the edge[0] is parent, edge[1]is the child, edge[1+] is also children
+        Ttemp = Ttemp.edges[0]; //children 
         A_path.push(Ttemp);
     }
 
     var B_path = [];
-    var Ttemp_b = T_2.vertices[T_2.newest];//object
+    var Ttemp_b = T_2.vertices[T_2.newest];
     B_path.push(Ttemp_b);
     while (T_2.vertices.indexOf(Ttemp_b) !== 0){
-        Ttemp_b = Ttemp_b.edges[0];//for every vertex, the edge[0] is parent, edge[1]is the child, edge[1+] is also children
+        Ttemp_b = Ttemp_b.edges[0];
         B_path.push(Ttemp_b);
     }
 
@@ -439,39 +439,6 @@ function rrt_connect(T_1, T_2){
 
 
 
-function rrt_star_extend(T, q){
-    var rrtStarExtendResult=[];
-    if (step_inter/3>Math.random()){
-        q = q_goal_config;
-    }
-    var q_near = nearest_neighbor(T,q)[1];
-    if (new_config(q,q_near)){
-        var q_new = new_config(q,q_near);
-        var added_vertex = tree_add_vertex(T, q_new);
-        var neighborList = nearest_star_neighbor(T,q_new);
-        var tempValue = 2333;
-        var tempIdNum = 1;
-        var tempParentIdNum = 1;
-        for (var i=0; i<neighborList.length; i++){
-            if (neighborList[i][0].value < tempValue ){
-                tempIdNum = neighborList[i][1];
-                tempValue = neighborList[i][0].value;
-            }tempParentIdNum = tempIdNum; 
-        }
-        added_vertex.value = T.vertices[tempParentIdNum].value + path_dfs(q_new, T.vertices[tempParentIdNum].vertex);
-        tree_add_edge(T, tempParentIdNum, T.newest);
-        find_path(T, neighborList, tempParentIdNum, T.newest);
-        if (path_dfs(q_new, q) < step_inter){
-            rrtStarExtendResult=["reached", added_vertex];
-        }
-        else{
-            rrtStarExtendResult=["ahead", added_vertex];
-        }
-    }else{
-    rrtStarExtendResult=["struck", T.vertices[0]];
-    }
-    return rrtStarExtendResult;
-}
 
 function nearest_star_neighbor(T,q){
     var neighborList = []
@@ -493,7 +460,6 @@ function rrt_star_extend(T_extend, star_head, star_new, star_nearest_index){
 
         tree_add_edge(T_extend,star_min_index,T_extend.newest);
         add_config_origin_indicator_geom(T_extend.vertices[T_extend.newest]);
-       // ReWire(T_extend, star_near_index, star_min_index);
 
         var distance_head = 0;
         for (let j = 0; j< q_goal_config.length; j++){

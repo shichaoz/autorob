@@ -160,7 +160,7 @@ function traverse_collision_forward_kinematics_joint(joint,mstack,q){
 }
 
 
-// for convienence 
+// my func 
 function   generate_rotation_matrix (r,p,y){
     var m = matrix_multiply( generate_rotation_matrix_Z( y ), generate_rotation_matrix_Y( p ) );
     m = matrix_multiply( m, generate_rotation_matrix_X( r ) );
