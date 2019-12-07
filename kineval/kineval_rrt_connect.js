@@ -344,7 +344,6 @@ function new_config(q_head, T_temp, q_near_index){
     }
 }
 
-
 function nearest_neighbor(q, T){
     var nearest_distance = 1e5;
     for(var i = 0; i< T.vertices.length; i++){
@@ -359,10 +358,6 @@ function nearest_neighbor(q, T){
     }
     return q_near_index;
 }
-
-
-
-
 function path_dfs(T_1,T_2){
     var A_path = [];
     var Ttemp = T_1.vertices[T_1.newest];
@@ -405,7 +400,6 @@ function path_dfs(T_1,T_2){
     }
     return path_result;
 }
-
 function rrt_extend(T_extend, q_head, q_new, q_near_index){
     if (q_new !== false){
         tree_add_vertex(T_extend,q_new);
@@ -425,7 +419,6 @@ function rrt_extend(T_extend, q_head, q_new, q_near_index){
         return "Trapped";
     }
 }
-
 function rrt_connect(T_1, T_2){
     var q_connect = T_1.vertices[T_1.newest].vertex;
     var g_connect = "Ahead";
@@ -436,11 +429,6 @@ function rrt_connect(T_1, T_2){
     }
     return g_connect;
 }
-
-
-
-
-
 function rrt_star_extend(T_extend, star_head, star_new, star_nearest_index){
     if (star_new){
         var star_near_index = get_near_index(T_extend, star_new, T_extend.vertices.length);
@@ -464,7 +452,6 @@ function rrt_star_extend(T_extend, star_head, star_new, star_nearest_index){
     }
     return "Trapped";
 }
-
 function path_dfs_star(T){
     var A_path = [];
     var Ttemp = T.vertices[T.newest];
@@ -481,7 +468,6 @@ function path_dfs_star(T){
 
 
 // func by myself for convience
-
 function get_parent(tree, star_near_index, star_nearest_index, star_new){
     var cross_min = tree.vertices[star_nearest_index].cost + ver_step;// 
     var star_min_index = star_nearest_index;
@@ -506,8 +492,6 @@ function get_parent(tree, star_near_index, star_nearest_index, star_new){
     
     return star_min_index;
 }
-
-
 function get_near_index(T_extend,q_new,q_range){
     var temp = q_new.length - 3;
     var gamm = 1.1/Math.pow(0.3662,temp) *ver_step;
