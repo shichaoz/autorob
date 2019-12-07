@@ -419,7 +419,7 @@ function rrt_extend(T_extend, q_head, q_new, q_near_index){
         if (Math.floor(distance_head /ver_step) === 0 ){
             return "Reached"; 
         }else{
-            return "Advanced"; 
+            return "Ahead"; 
         }
     }else{
         return "Trapped";
@@ -428,8 +428,8 @@ function rrt_extend(T_extend, q_head, q_new, q_near_index){
 
 function rrt_connect(T_1, T_2){
     var q_connect = T_1.vertices[T_1.newest].vertex;
-    var g_connect = "Advanced";
-    while (g_connect === "Advanced") {
+    var g_connect = "Ahead";
+    while (g_connect === "Ahead") {
         var q_near_2_id = nearest_neighbor(q_connect, T_2);
         var q_new2 = new_config(q_connect, T_2,q_near_2_id);
         g_connect = rrt_extend(T_2, q_connect, q_new2, q_near_2_id);
@@ -469,7 +469,7 @@ function rrt_star_extend(T_extend, star_head, star_new, star_nearest_index){
         if (Math.floor(distance_head /ver_step) == 0 ){
             return "Reached";
         }else{
-            return "Advanced";
+            return "Ahead";
         }
     }
     return "Trapped";
