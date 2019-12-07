@@ -440,16 +440,6 @@ function rrt_connect(T_1, T_2){
 
 
 
-function nearest_star_neighbor(T,q){
-    var neighborList = []
-    for (var i=0; i<T.vertices.length - 1; i++){
-        if (1.1*step_inter>path_dfs(q, T.vertices[i].vertex)){
-            neighborList.push([T.vertices[i], i])
-        }
-    }
-    return neighborList;
-}
-
 
 function rrt_star_extend(T_extend, star_head, star_new, star_nearest_index){
     if (star_new){
