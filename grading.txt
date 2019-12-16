@@ -3,6 +3,7 @@
 
 Assignment 1 feature 1 (0.00/0): PathPlan_Honor: DUE
     error: license integrity not maintained (NO GRADE until proper license assertion)
+    regrade: license integrity not maintained (NO GRADE until proper license assertion)
 Assignment 1 feature 2 (4.00/4): PathPlan_Heap: CHECK
     comment: good work
 Assignment 1 feature 3 (8.00/8): PathPlan_AStar: CHECK
@@ -23,8 +24,8 @@ Assignment 2 feature 10 (1.00/1): Pendularm_Verlet: CHECK
     
 Assignment 2 feature 11 (2.00/2): Pendularm_RK4: CHECK
     
-Assignment 2 feature 12 (0.00/3): Pendularm_Double: PENDING
-    
+Assignment 2 feature 12 (1.98/3): Pendularm_Double: PERCENT 66
+    comment: integration with servo controls
 Assignment 3 feature 13 (2.00/2): FK_MatrixRoutines: CHECK
     
 Assignment 3 feature 14 (8.00/8): FK_Transforms: CHECK
@@ -57,20 +58,22 @@ Assignment 5 feature 27 (3.00/3): IK_JPseudoinverse: CHECK
     warning: target and endeffector geometries do not display appropriately
 Assignment 5 feature 28 (0.00/6): IK_EulerAngles: DUE
     error: endeffector does not converge to appropriate position and orientation
-Assignment 6 feature 29 (0.00/4): MotionPlan_Collision: PENDING
+Assignment 6 feature 29 (4.00/4): MotionPlan_Collision: CHECK
     
-Assignment 6 feature 30 (0.00/2): MotionPlan_2DRRTConnect: PENDING
-    
-Assignment 6 feature 31 (0.00/6): MotionPlan_CSpaceRRTConnect: PENDING
-    
+Assignment 6 feature 30 (0.00/2): MotionPlan_2DRRTConnect: DUE
+    error: motion planner does not iterate
+Assignment 6 feature 31 (0.00/6): MotionPlan_CSpaceRRTConnect: DUE
+    error: planner does not return motion path solution within expected time
+    warning: sampling does not sufficiently explore configuration space
 Assignment 6 feature 32 (0.00/6): MotionPlan_RRTStar: PENDING
     
-Assignment 7 feature 33 (0.00/12): Pitch: PENDING
+Assignment 7 feature 33 (12.00/12): Pitch: CHECK
     
-Assignment 7 feature 34 (0.00/6): Pitch_Advanced: PENDING
+Assignment 7 feature 34 (6.00/6): Pitch_Advanced: CHECK
     
 Assignment 8 feature 35 (0.00/4): Advanced: PENDING
-    
+    Pendularm_DoublePendulumEOM: error: unjustified assertion
+    comment: justify Equation 16
 Quiz 1: 1.08 of 4
 Quiz 2: 3.67 of 4
 Quiz 3: 2.50 of 4
